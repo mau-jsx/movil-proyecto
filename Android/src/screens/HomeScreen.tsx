@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import {
   useFonts,
@@ -9,6 +8,8 @@ import {
 } from '@expo-google-fonts/montserrat';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigators/AuthStack';
+import Svg, { Path } from 'react-native-svg';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Home'>;
 
@@ -22,93 +23,87 @@ export default function HomeScreen({ navigation }: Props) {
   if (!fontsLoaded) return null;
 
   return (
-    <ImageBackground
-      source={require('../assets/fondo.jpg')}
-      style={styles.background}
-      resizeMode="cover">
-      <View style={styles.overlay}>
-        <View style={styles.waveWrapper}>
-          <Svg height="120" width="100%" viewBox="0 0 1440 320" style={styles.wave}>
-            <Path fill="white" d="M0,-50 C360,240 720,100 1440,-50 L1440,320 L0,320 Z" />
-          </Svg>
+    <View className="flex-1 bg-[#f5f0fa]">
+      {/* Gradient background */}
+      <LinearGradient
+        colors={['#f5f0fa', '#e9dcf2']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        className="absolute top-0 left-0 right-0 bottom-0"
+      />
 
-          <View style={styles.whiteBox}>
-            <Text style={styles.title}>Bienvenido a ClimaGuard</Text>
-
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
-              <Text style={styles.buttonText}>Crear cuenta</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Login')}>
-              <Feather name="log-in" size={16} color="#1a1a2e" />
-              <Text style={styles.linkText}>Ya tengo cuenta</Text>
-            </TouchableOpacity>
-          </View>
+      {/* Top section */}
+      <View className="flex-1 justify-center items-center px-6 pt-12">
+        <View className="bg-white p-6 rounded-full shadow-lg shadow-[#1a1a2e]/20 mb-8">
+          <Image
+            source={require('../assets/climarHome.png')}
+            className="w-64 h-64"
+            resizeMode="contain"
+          />
         </View>
+
+        <Text
+          className="text-center text-[34px] text-[#1a1a2e] mb-3"
+          style={{ fontFamily: 'Montserrat_900Black' }}>
+          Bienvenido a ClimaGuard
+        </Text>
+
+        <Text
+          className="text-center text-base text-[#4a4a6a] mt-2 px-8 leading-6"
+          style={{ fontFamily: 'Montserrat_400Regular' }}>
+          Tu aliado para anticiparte y protegerte ante desastres naturales.
+        </Text>
       </View>
-    </ImageBackground>
+
+      {/* Wave divider */}
+      <View className="relative h-24 -mt-12">
+        <Svg height="100%" width="100%" viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <Path 
+            fill="white" 
+            d="M0,0 C300,60 600,0 900,30 C1200,60 1440,0 1440,0 L1440,120 L0,120 Z" 
+          />
+        </Svg>
+      </View>
+
+      {/* Bottom section */}
+      <View className="bg-white px-10 pt-8 pb-10">
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Register')}
+          className="w-full bg-[#1a1a2e] py-4 rounded-xl mb-4 shadow-md shadow-[#1a1a2e]/30"
+          activeOpacity={0.8}>
+          <Text
+            className="text-white text-center text-lg py-2"
+            style={{ fontFamily: 'Montserrat_600SemiBold' }}>
+            Crear cuenta
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Login')}
+          className="flex-row items-center justify-center mt-4 py-3"
+          activeOpacity={0.7}>
+          <Feather name="log-in" size={18} color="#1a1a2e" />
+          <Text
+            className="text-[#1a1a2e] text-base ml-2"
+            style={{ fontFamily: 'Montserrat_500SemiBold' }}>
+            Ya tengo una cuenta
+          </Text>
+        </TouchableOpacity>
+
+        <Text className="text-center text-xs text-gray-400 mt-6" style={{ fontFamily: 'Montserrat_400Regular' }}>
+          Al continuar aceptas nuestros Términos y Condiciones
+        </Text>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    justifyContent: 'flex-end',
-  },
-  waveWrapper: {
-    position: 'relative',
-  },
-  wave: {
-    position: 'absolute',
-    top: -100,
-    width: '100%',
-  },
-  whiteBox: {
-    backgroundColor: 'white',
-    paddingTop: 290,
-    paddingBottom: 40,
-    paddingHorizontal: 32,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    alignItems: 'center',
-    marginTop: -20,
-  },
-  title: {
-    fontFamily: 'Montserrat_900Black',
-    fontSize: 40,
-    top: -270,
-    color: '#1a1a2e',
-    textAlign: 'center',
-    marginBottom: -50,
-  },
-  button: {
-    backgroundColor: '#1a1a2e',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 16,
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 20,
-    top: -150,
-  },
-  buttonText: {
-    color: 'white',
-    fontFamily: 'Montserrat_600SemiBold',
-    fontSize: 16,
-  },
-  link: {
-    top: -136,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  linkText: {
-    fontFamily: 'Montserrat_400Regular',
-    fontSize: 16,
-    color: '#1a1a2e',
-    marginLeft: 8,
+  buttonShadow: {
+    shadowColor: '#1a1a2e',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 5,
   },
 });
